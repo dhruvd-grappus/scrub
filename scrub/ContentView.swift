@@ -148,6 +148,17 @@ struct SliderView3: View {
     var minTrackColor: Color = .blue
     var maxTrackColor: Color = .gray
     
+    
+    func xOffset(for : Double, gp: GeometryProxy) -> Double {
+        let minValue = 0.0
+        let maxValue = (gp.size.width - 30 )
+        
+        let scaleFactor = (maxValue - minValue)
+        let lower = sliderRange.lowerBound
+        let sliderVal = (self.value - lower) * scaleFactor + minValue
+        
+        return sliderVal
+    }
     var body: some View {
         GeometryReader { gr in
       
@@ -156,7 +167,7 @@ struct SliderView3: View {
             
             let scaleFactor = (maxValue - minValue)
             let lower = sliderRange.lowerBound
-            let sliderVal = (self.value - lower) * scaleFactor + minValue
+            let sliderVal = xOffset(for: value, gp: gr)
             
             ZStack {
                 RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/)
@@ -168,7 +179,19 @@ struct SliderView3: View {
                         self.value = location.x / gr.size.width
                         self.isSeeking = true
                     }
-               
+                HStack {
+                    Circle()
+                        .foregroundColor(thumbColor)
+                        .frame(width: 30, height: 50)
+                        .offset(x: 50,y:-50)
+                        .onTapGesture(count: 1) { location in
+                            
+                            // Perform an action based on tap location (optional)
+                            self.value = (location.x - 15) / gr.size.width
+                            self.isSeeking = true
+                        }
+                    Spacer()
+                }
               
                 
                 HStack {
