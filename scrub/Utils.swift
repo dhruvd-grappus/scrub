@@ -7,9 +7,10 @@
 
 import Foundation
 import SwiftUI
-public extension Color {
-    
-    static func random(randomOpacity: Bool = false) -> Color {
+
+extension Color {
+
+    public static func random(randomOpacity: Bool = false) -> Color {
         Color(
             red: .random(in: 0...1),
             green: .random(in: 0...1),
