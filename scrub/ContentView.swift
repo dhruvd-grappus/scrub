@@ -150,13 +150,11 @@ struct SliderView3: View {
     
     var body: some View {
         GeometryReader { gr in
-            let thumbHeight = gr.size.height * 1.1
-            let thumbWidth = gr.size.width * 0.03
-            let radius = gr.size.height * 0.5
-            let minValue = gr.size.width * 0.015
-            let maxValue = (gr.size.width * 0.98) - thumbWidth
+      
+            let minValue = 0.0
+            let maxValue = (gr.size.width - 30 )
             
-            let scaleFactor = (maxValue - minValue) / (sliderRange.upperBound - sliderRange.lowerBound)
+            let scaleFactor = (maxValue - minValue)
             let lower = sliderRange.lowerBound
             let sliderVal = (self.value - lower) * scaleFactor + minValue
             
