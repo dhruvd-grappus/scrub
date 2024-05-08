@@ -64,6 +64,8 @@ struct ContentView: View {
                 Image(systemName:isPlaying ? "pause" : "play")
                     .foregroundStyle(.white)
                     .padding(.all,5)
+                    .padding(.trailing,15)
+                    .frame(width:10)
                     .onTapGesture {
                         if player.timeControlStatus == .playing {
                             isPlaying = false
@@ -98,6 +100,7 @@ struct ContentView: View {
                                else {
                                    player.seek(to: CMTimeMakeWithSeconds(newValue * (player.currentItem?.duration.seconds ?? 0), preferredTimescale: 600))
                                    isPlaying = true
+                                   isSeeking = false
                                    player.play()
                                    if let currentItem = player.currentItem {
                                        
