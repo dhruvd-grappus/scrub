@@ -41,7 +41,40 @@ struct ContentView: View {
       )!)
     timeObserver = PlayerTimeObserver(player: self.player)
   }
-  var body: some View {
+    fileprivate func seekVideoForPosition(_ newValue: Double) {
+        if isSeeking {
+            if isPlaying {
+                isPlaying = false
+                player.pause()
+                player.seek(
+                    to: CMTimeMakeWithSeconds(
+                        newValue * (player.currentItem?.duration.seconds ?? 0), preferredTimescale: 600)
+                )
+                isPlaying = true
+                isSeeking = false
+                player.play()
+                
+            } else {
+                player.seek(
+                    to: CMTimeMakeWithSeconds(
+                        newValue * (player.currentItem?.duration.seconds ?? 0), preferredTimescale: 600)
+                )
+                isPlaying = true
+                isSeeking = false
+                player.play()
+                if let currentItem = player.currentItem {
+                    
+                    if currentItem.duration.seconds > 1 && totalDuration == nil {
+                        self.totalDuration = currentItem.duration.seconds
+                        
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    var body: some View {
     VStack {
       VideoPlayer(player: player)
         .disabled(true)
@@ -55,7 +88,10 @@ struct ContentView: View {
           if !isSeeking {
 
             if totalDuration != nil {
-              self.seekPos = (time / (totalDuration!))
+                withAnimation {
+                    self.seekPos = (time / (totalDuration!))
+                }
+            
               
             }
 
@@ -88,40 +124,24 @@ struct ContentView: View {
           }
           SliderView3(value: $seekPos, isSeeking: $isSeeking, totalTime: $totalDuration, currentTime: $currentTime,placemarks: [200,531])
           .onChange(of: seekPos) { newValue in
-            if isSeeking {
-              if isPlaying {
-                isPlaying = false
-                player.pause()
-                player.seek(
-                  to: CMTimeMakeWithSeconds(
-                    newValue * (player.currentItem?.duration.seconds ?? 0), preferredTimescale: 600)
-                )
-                isPlaying = true
-                isSeeking = false
-                player.play()
-
-              } else {
-                player.seek(
-                  to: CMTimeMakeWithSeconds(
-                    newValue * (player.currentItem?.duration.seconds ?? 0), preferredTimescale: 600)
-                )
-                isPlaying = true
-                isSeeking = false
-                player.play()
-                if let currentItem = player.currentItem {
-
-                  if currentItem.duration.seconds > 1 && totalDuration == nil {
-                    self.totalDuration = currentItem.duration.seconds
-
-                  }
-                }
-              }
-
-            }
+              seekVideoForPosition(newValue)
 
           }
-          .frame(width: 700, height: 100)
-
+          .frame(width:600,height: 100)
+          Image(systemName: "arrowshape.turn.up.backward.badge.clock.rtl")
+              .resizable()
+              .foregroundStyle(.white)
+              .frame(width: 40,height: 40)
+              .padding(.leading,10)
+              .onTapGesture {
+                  isSeeking = true
+                  player.seek(to: CMTimeMakeWithSeconds(currentTime + 20, preferredTimescale: 100))
+                 
+                  if isPlaying {
+                      isSeeking = false
+                  }
+                  isSeeking = false
+              }
         Spacer().frame(height: 50)
       }
       .padding(.all, 25)
