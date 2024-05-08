@@ -14,7 +14,7 @@ class PlayerTimeObserver {
     private var timeObservation: Any?
     
     init(player: AVPlayer) {
-        // Periodically observe the player's current time, whilst playing
+        
         timeObservation = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.5, preferredTimescale: 600), queue: nil) { [weak self] time in
             guard let self = self else { return }
             // Publish the new player time
@@ -39,7 +39,7 @@ struct ContentView: View {
         VStack {
             VideoPlayer(player: player )
                 .disabled(true)
-                
+                .frame(height: 500)
                 .onReceive(timeObserver.publisher) { time in
                     self.currentTime = time
                     
@@ -63,6 +63,7 @@ struct ContentView: View {
             HStack {
                 Image(systemName:isPlaying ? "pause" : "play")
                     .foregroundStyle(.white)
+                    .padding(.all,5)
                     .onTapGesture {
                         if player.timeControlStatus == .playing {
                             isPlaying = false
@@ -90,10 +91,12 @@ struct ContentView: View {
                                    player.pause()
                                    player.seek(to: CMTimeMakeWithSeconds(newValue * (player.currentItem?.duration.seconds ?? 0), preferredTimescale: 600))
                                    isPlaying = true
+                                   isSeeking = false
                                    player.play()
                                    
                                }
                                else {
+                                   player.seek(to: CMTimeMakeWithSeconds(newValue * (player.currentItem?.duration.seconds ?? 0), preferredTimescale: 600))
                                    isPlaying = true
                                    player.play()
                                    if let currentItem = player.currentItem {
@@ -111,22 +114,26 @@ struct ContentView: View {
                           
                           
                        }
-                       .frame(width: 700)
+                       .frame(width: 700, height: 100)
+                   
                        
             
                 
                 Spacer().frame(height: 50)
             }
             .padding(.all,25)
-            .frame(height: 100)
+            
             .background() {
                 RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/)
+                    .foregroundColor(.gray)
             }
             
             .padding(.all,25)
-            Spacer().frame(height: 300)
+           
             
         }
+        
+        .ignoresSafeArea()
         
        
     }
@@ -157,13 +164,20 @@ struct SliderView3: View {
                 RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/)
                     .foregroundColor(.white)
                     .frame(width: gr.size.width, height: 10)
-                   
+                    .onTapGesture(count: 1) { location in
+                       
+                        // Perform an action based on tap location (optional)
+                        self.value = location.x / gr.size.width
+                        self.isSeeking = true
+                    }
+               
+              
                 
                 HStack {
                     Circle()
                         .foregroundColor(thumbColor)
                         .frame(width: 30, height: 50)
-                        .offset(x: sliderVal - 10)
+                        .offset(x: sliderVal)
                         .gesture(
                             DragGesture(minimumDistance: 0)
                                 .onChanged { v in
@@ -186,6 +200,7 @@ struct SliderView3: View {
                     Spacer()
                 }
             }
+            .frame(height: 100)
         }
     }
 }
