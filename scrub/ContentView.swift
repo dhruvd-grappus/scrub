@@ -8,7 +8,13 @@
 import AVKit
 import Combine
 import SwiftUI
-
+class VideoPlayerVM : ObservableObject {
+    @Published var seekPos = 0.0
+    @Published var isPlaying = false
+    @Published var currentTime = 0.0
+    @Published var isSeeking = false
+    @Published  var totalDuration: Double?
+}
 class PlayerTimeObserver {
   let publisher = PassthroughSubject<TimeInterval, Never>()
   private var timeObservation: Any?
@@ -28,11 +34,7 @@ struct ContentView: View {
   let timeObserver: PlayerTimeObserver
   let player: AVPlayer
 
-  @State var seekPos = 0.0
-  @State var isPlaying = false
-  @State var currentTime = 0.0
-  @State var isSeeking = false
-  @State private var totalDuration: Double?
+    @StateObject var videoVM = VideoPlayerVM()
   init() {
     self.player = AVPlayer(
       url: URL(
@@ -42,16 +44,16 @@ struct ContentView: View {
     timeObserver = PlayerTimeObserver(player: self.player)
   }
     fileprivate func seekVideoForPosition(_ newValue: Double) {
-        if isSeeking {
-            if isPlaying {
-                isPlaying = false
+        if videoVM.isSeeking {
+            if videoVM.isPlaying {
+                videoVM.isPlaying = false
                 player.pause()
                 player.seek(
                     to: CMTimeMakeWithSeconds(
                         newValue * (player.currentItem?.duration.seconds ?? 0), preferredTimescale: 600)
                 )
-                isPlaying = true
-                isSeeking = false
+                videoVM.isPlaying = true
+                videoVM.isSeeking = false
                 player.play()
                 
             } else {
@@ -59,13 +61,13 @@ struct ContentView: View {
                     to: CMTimeMakeWithSeconds(
                         newValue * (player.currentItem?.duration.seconds ?? 0), preferredTimescale: 600)
                 )
-                isPlaying = true
-                isSeeking = false
+                videoVM.isPlaying = true
+                videoVM.isSeeking = false
                 player.play()
                 if let currentItem = player.currentItem {
                     
-                    if currentItem.duration.seconds > 1 && totalDuration == nil {
-                        self.totalDuration = currentItem.duration.seconds
+                    if currentItem.duration.seconds > 1 && videoVM.totalDuration == nil {
+                        videoVM.totalDuration = currentItem.duration.seconds
                         
                     }
                 }
@@ -80,16 +82,16 @@ struct ContentView: View {
         .disabled(true)
         .frame(height: 500)
         .onReceive(timeObserver.publisher) { time in
-          self.currentTime = time
+            videoVM.currentTime = time
 
         }
-        .onChange(of: currentTime) { oldTime, time in
+        .onChange(of:  videoVM.currentTime) { oldTime, time in
 
-          if !isSeeking {
+            if !videoVM.isSeeking {
 
-            if totalDuration != nil {
+                if  videoVM.totalDuration != nil {
                 withAnimation {
-                    self.seekPos = (time / (totalDuration!))
+                    videoVM.seekPos = (time / ( videoVM.totalDuration!))
                 }
             
               
@@ -99,7 +101,7 @@ struct ContentView: View {
         }
       Spacer().frame(height: 20)
       HStack {
-        Image(systemName: isPlaying ? "pause" : "play")
+          Image(systemName:  videoVM.isPlaying ? "pause" : "play")
               .resizable()
           .foregroundStyle(.white)
           .frame(width: 40,height: 40)
@@ -107,23 +109,23 @@ struct ContentView: View {
           
           .onTapGesture {
             if player.timeControlStatus == .playing {
-              isPlaying = false
+                videoVM.isPlaying = false
               player.pause()
             } else {
-              isPlaying = true
+                videoVM.isPlaying = true
               player.play()
               if let currentItem = player.currentItem {
 
-                if currentItem.duration.seconds > 1 && totalDuration == nil {
-                  self.totalDuration = currentItem.duration.seconds
+                  if currentItem.duration.seconds > 1 && videoVM.totalDuration == nil {
+                      videoVM.totalDuration = currentItem.duration.seconds
 
                 }
               }
             }
 
           }
-          SliderView3(value: $seekPos, isSeeking: $isSeeking, totalTime: $totalDuration, currentTime: $currentTime,placemarks: [200,531])
-          .onChange(of: seekPos) { newValue in
+          SliderView3(value:$videoVM.seekPos, isSeeking: $videoVM.isSeeking, totalTime: $videoVM.totalDuration, currentTime: $videoVM.currentTime,placemarks: [200,531])
+              .onChange(of: videoVM.seekPos) { newValue in
               seekVideoForPosition(newValue)
 
           }
@@ -134,13 +136,13 @@ struct ContentView: View {
               .frame(width: 40,height: 40)
               .padding(.leading,10)
               .onTapGesture {
-                  isSeeking = true
-                  player.seek(to: CMTimeMakeWithSeconds(currentTime + 20, preferredTimescale: 100))
+                  videoVM.isSeeking = true
+                  player.seek(to: CMTimeMakeWithSeconds(videoVM.currentTime + 20, preferredTimescale: 100))
                  
-                  if isPlaying {
-                      isSeeking = false
+                  if videoVM.isPlaying {
+                      videoVM.isSeeking = false
                   }
-                  isSeeking = false
+                  videoVM.isSeeking = false
               }
         Spacer().frame(height: 50)
       }
