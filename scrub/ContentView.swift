@@ -8,17 +8,18 @@
 import AVKit
 import Combine
 import SwiftUI
-
-struct ContentView: View {
+import UIKit
+struct ContentView: View{
 
     @StateObject var videoVM = VideoPlayerVM(
         player: AVPlayer(
             url: URL(
                 string:
-                    "https://embed-ssl.wistia.com/deliveries/cc8402e8c16cc8f36d3f63bd29eb82f99f4b5f88/accudvh5jy.mp4"
+                    "https://db2.indexcom.com/bucket/ram/00/05/05.m3u8"
             )!
         )
     )
+    
     init() {
 
     }
@@ -33,7 +34,13 @@ struct ContentView: View {
             VideoControls(videoVM: videoVM)
 
         }
-
+        .onAppear() {
+            Task {
+                   videoVM.play(url: URL(string:"https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8")!)
+            }
+          
+           
+        }
         .ignoresSafeArea()
 
     }

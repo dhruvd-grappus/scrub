@@ -9,7 +9,7 @@ import Combine
 import Foundation
 import SwiftUI
 
-class VideoPlayerVM: ObservableObject {
+class VideoPlayerVM: NSObject, ObservableObject, AVPlayerItemMetadataOutputPushDelegate {
     let player: AVPlayer
     let timeObserver: PlayerTimeObserver
     init(player: AVPlayer) {
@@ -21,6 +21,38 @@ class VideoPlayerVM: ObservableObject {
     @Published var currentTime = 0.0
     @Published var isSeeking = false
     @Published var totalDuration: Double?
+    
+    var metadataCollector: AVPlayerItemMetadataCollector!
+    
+    
+     func play(url: URL?) {
+         let url = URL(string: "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8")!
+        
+        let asset = AVAsset(url: url)
+        
+        var playerItem = AVPlayerItem(asset: asset)
+        
+         player.replaceCurrentItem(with: playerItem)
+        let metadataOutput = AVPlayerItemMetadataOutput(identifiers: nil)
+        metadataOutput.setDelegate(self, queue: DispatchQueue.main)
+        playerItem.add(metadataOutput)
+        
+      
+        player.play()
+    }
+    
+    
+    func metadataOutput(_ output: AVPlayerItemMetadataOutput, didOutputTimedMetadataGroups groups: [AVTimedMetadataGroup], from track: AVPlayerItemTrack?) {
+        
+        if let item = groups.first?.items.first
+        {
+            item.value(forKeyPath: #keyPath(AVMetadataItem.value))
+            let metadataValue = (item.value(forKeyPath: #keyPath(AVMetadataItem.value))!)
+           print(metadataValue)
+        } else {
+            print("MetaData Error")
+        }
+    }
 
 }
 class PlayerTimeObserver {
@@ -39,3 +71,5 @@ class PlayerTimeObserver {
         }
     }
 }
+
+
