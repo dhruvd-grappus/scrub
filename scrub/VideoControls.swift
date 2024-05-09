@@ -51,6 +51,16 @@ struct VideoControls: View {
 
         }
     }
+    func setTotalDuration() async{
+        for item in videoVM.items {
+            if videoVM.totalDuration == nil {
+                videoVM.totalDuration = 0
+            }
+           let time = try! await item.asset.load(.duration)
+            videoVM.totalDuration! += time.seconds
+        }
+       
+    }
     var body: some View {
         HStack {
             Image(systemName: videoVM.isPlaying ? "pause" : "play")
@@ -64,24 +74,19 @@ struct VideoControls: View {
                         videoVM.isPlaying = false
                         videoVM.player.pause()
                     } else {
-                        videoVM.isPlaying = true
-                        videoVM.player.play()
-                        if let currentItem = videoVM.player.currentItem {
-
-                            if currentItem.duration.seconds > 1
-                                && videoVM.totalDuration == nil
-                            {
-                                videoVM.totalDuration =
-                                    currentItem.duration.seconds
-
-                            }
+                        
+                        Task {
+                            await setTotalDuration()
+                            videoVM.isPlaying = true
+                            videoVM.player.play()
                         }
+                        
                     }
 
                 }
             VideoTimelineView(
                 videoVM: videoVM,
-                placemarks: [200, 531]
+                placemarks: [200]
             )
             .onChange(of: videoVM.seekPos) { newValue in
                 seekVideoForPosition(newValue)
@@ -119,7 +124,14 @@ struct VideoControls: View {
         }
         .onReceive(videoVM.timeObserver.publisher) { time in
             videoVM.currentTime = time
-
+            if let duration = videoVM.player.currentItem?.duration.seconds {
+                if duration == time {
+                    print("ended")
+                    videoVM.player.pause()
+                    videoVM.player.replaceCurrentItem(with: videoVM.items[1])
+                    videoVM.player.play()
+                }
+            }
         }
         .onChange(of: videoVM.currentTime) { oldTime, time in
 

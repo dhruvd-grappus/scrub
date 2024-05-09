@@ -11,11 +11,14 @@ import SwiftUI
 
 class VideoPlayerVM: ObservableObject {
     let player: AVPlayer
+    let items: [AVPlayerItem]
     let timeObserver: PlayerTimeObserver
-    init(player: AVPlayer) {
-        self.player = player
+    init(player: AVPlayer,items : [AVPlayerItem]) {
+        self.player = AVPlayer(playerItem: items.first)
         self.timeObserver = PlayerTimeObserver(player: self.player)
+        self.items = items
     }
+    @Published var currentItemIndex = 0
     @Published var seekPos = 0.0
     @Published var isPlaying = false
     @Published var currentTime = 0.0

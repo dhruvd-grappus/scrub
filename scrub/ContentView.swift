@@ -8,6 +8,9 @@
 import AVKit
 import Combine
 import SwiftUI
+let vid2 = "https://embed-ssl.wistia.com/deliveries/cc8402e8c16cc8f36d3f63bd29eb82f99f4b5f88/accudvh5jy.mp4"
+
+let vid1 = "https://cdn.pixabay.com/video/2024/03/01/202587-918431513_large.mp4"
 
 struct ContentView: View {
 
@@ -15,9 +18,9 @@ struct ContentView: View {
         player: AVPlayer(
             url: URL(
                 string:
-                    "https://embed-ssl.wistia.com/deliveries/cc8402e8c16cc8f36d3f63bd29eb82f99f4b5f88/accudvh5jy.mp4"
+                    "c16cc8f36d3f63bd29eb82f99f4b5f88/accudvh5jy.mp4"
             )!
-        )
+        ), items: [AVPlayerItem(url: URL(string:vid1)!),AVPlayerItem(url: URL(string:vid2)!)]
     )
     init() {
 
@@ -32,6 +35,10 @@ struct ContentView: View {
             Spacer().frame(height: 20)
             VideoControls(videoVM: videoVM)
 
+        }
+        .onAppear() {
+            
+           
         }
 
         .ignoresSafeArea()
