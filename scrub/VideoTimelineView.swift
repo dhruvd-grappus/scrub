@@ -88,7 +88,7 @@ struct VideoTimelineView: View {
                             .offset(
                                 x: Double(p.seconds) * (gr.size.width)
                                     / (videoVM.totalDuration ?? 1),
-                                y: -40
+                                y: -35
                             )
                             .onTapGesture(count: 1) { location in
 
@@ -150,10 +150,10 @@ struct VideoTimelineView: View {
 
                 }
             }
-            .padding(.top, 48)
-            .padding(.all, 11)
+            .padding(.top, 35)
+            .padding(.all, 13)
 
-            .fixedSize()
+          
             .background {
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundStyle(.black.opacity(0.2))
