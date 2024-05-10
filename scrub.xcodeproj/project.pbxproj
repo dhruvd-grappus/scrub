@@ -10,6 +10,7 @@
 		FC102F112BEBA6140097422A /* VideoControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC102F102BEBA6140097422A /* VideoControls.swift */; };
 		FC102F132BEBA6510097422A /* VideoVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC102F122BEBA6510097422A /* VideoVM.swift */; };
 		FC102F152BEBA7310097422A /* VideoTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC102F142BEBA7310097422A /* VideoTimelineView.swift */; };
+		FC6878732BEDF98B008E4960 /* moments(1).svg in Resources */ = {isa = PBXBuildFile; fileRef = FC6878722BEDF98B008E4960 /* moments(1).svg */; };
 		FCA13EFA2BEB637C003F6BB8 /* scrubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA13EF92BEB637C003F6BB8 /* scrubApp.swift */; };
 		FCA13EFC2BEB637C003F6BB8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA13EFB2BEB637C003F6BB8 /* ContentView.swift */; };
 		FCA13EFE2BEB637E003F6BB8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCA13EFD2BEB637E003F6BB8 /* Assets.xcassets */; };
@@ -21,6 +22,7 @@
 		FC102F102BEBA6140097422A /* VideoControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoControls.swift; sourceTree = "<group>"; };
 		FC102F122BEBA6510097422A /* VideoVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoVM.swift; sourceTree = "<group>"; };
 		FC102F142BEBA7310097422A /* VideoTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTimelineView.swift; sourceTree = "<group>"; };
+		FC6878722BEDF98B008E4960 /* moments(1).svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "moments(1).svg"; sourceTree = "<group>"; };
 		FCA13EF62BEB637C003F6BB8 /* scrub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = scrub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCA13EF92BEB637C003F6BB8 /* scrubApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = scrubApp.swift; sourceTree = "<group>"; };
 		FCA13EFB2BEB637C003F6BB8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 				FCA13EFB2BEB637C003F6BB8 /* ContentView.swift */,
 				FCD019C92BEB9B1600AB0C5E /* Utils.swift */,
 				FCA13EFD2BEB637E003F6BB8 /* Assets.xcassets */,
+				FC6878722BEDF98B008E4960 /* moments(1).svg */,
 				FCA13EFF2BEB637E003F6BB8 /* scrub.entitlements */,
 				FCA13F002BEB637E003F6BB8 /* Preview Content */,
 				FC102F102BEBA6140097422A /* VideoControls.swift */,
@@ -140,6 +143,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FCA13F022BEB637E003F6BB8 /* Preview Assets.xcassets in Resources */,
+				FC6878732BEDF98B008E4960 /* moments(1).svg in Resources */,
 				FCA13EFE2BEB637E003F6BB8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

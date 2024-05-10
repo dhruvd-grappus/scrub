@@ -51,75 +51,60 @@ struct VideoControls: View {
 
         }
     }
-    var body: some View {
-        HStack {
-            Image(systemName: videoVM.isPlaying ? "pause" : "play")
-                .resizable()
-                .foregroundStyle(.white)
-                .frame(width: 40, height: 40)
-                .padding(.trailing, 10)
-
-                .onTapGesture {
-                    if videoVM.player.timeControlStatus == .playing {
-                        videoVM.isPlaying = false
-                        videoVM.player.pause()
-                    } else {
-                        videoVM.isPlaying = true
-                        videoVM.player.play()
-                        if let currentItem = videoVM.player.currentItem {
-
-                            if currentItem.duration.seconds > 1
-                                && videoVM.totalDuration == nil
-                            {
-                                videoVM.totalDuration =
-                                    currentItem.duration.seconds
-
-                            }
-                        }
-                    }
-
+    
+    func playORPause() {
+        if videoVM.player.timeControlStatus == .playing {
+            videoVM.isPlaying = false
+            videoVM.player.pause()
+        } else {
+            videoVM.isPlaying = true
+            videoVM.player.play()
+            if let currentItem = videoVM.player.currentItem {
+                
+                if currentItem.duration.seconds > 1
+                    && videoVM.totalDuration == nil
+                {
+                    videoVM.totalDuration =
+                    currentItem.duration.seconds
+                    
                 }
+            }
+        }
+    }
+    var body: some View {
+        VStack(spacing:0) {
+       
+         
+            Spacer().frame(height: 30)
             VideoTimelineView(
                 videoVM: videoVM,
-                placemarks: [200, 531]
+                placemarks: [10, 20]
             )
             .onChange(of: videoVM.seekPos) { newValue in
                 seekVideoForPosition(newValue)
 
             }
-            .frame(width: 600, height: 100)
-            Image(systemName: "arrowshape.turn.up.backward.badge.clock.rtl")
-                .resizable()
-                .foregroundStyle(.white)
-                .frame(width: 40, height: 40)
-                .padding(.leading, 10)
-                .onTapGesture {
-                    videoVM.isSeeking = true
-                    videoVM.player.seek(
-                        to: CMTimeMakeWithSeconds(
-                            videoVM.currentTime + 20,
-                            preferredTimescale: 100
-                        )
-                    )
-
-                    if videoVM.isPlaying {
-                        videoVM.isSeeking = false
-                    }
-                    videoVM.isSeeking = false
-                }
-            Spacer().frame(height: 50)
+            .padding(.trailing,24)
+          
+            .frame(width:888, height: 100)
+           Spacer()
+           
         }
-        .padding(.all, 25)
+        .frame(width: 900,height: 170)
+        .padding(.all,12)
 
         .background {
             RoundedRectangle(
                 cornerRadius: /*@START_MENU_TOKEN@*/ 25.0 /*@END_MENU_TOKEN@*/
             )
-            .foregroundColor(.gray)
+            .foregroundColor(.panelGray)
         }
         .onReceive(videoVM.timeObserver.publisher) { time in
             videoVM.currentTime = time
 
+        }
+        .onAppear() {
+            videoVM.totalDuration = 60
         }
         .onChange(of: videoVM.currentTime) { oldTime, time in
 
@@ -141,3 +126,4 @@ struct VideoControls: View {
 #Preview {
     VideoControls(videoVM: VideoPlayerVM(player: AVPlayer()))
 }
+

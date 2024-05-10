@@ -64,9 +64,9 @@ struct VideoTimelineView: View {
                 }
                 ZStack(alignment: .leading) {
                     ForEach(placemarks, id: \.self) { p in
-                        Circle()
-                            .foregroundColor(Color.red)
-                            .frame(width: 20, height: 50)
+                        Image(.moments)
+                            .resizable()
+                            .frame(width: 24, height: 24)
                             .offset(
                                 x: Double(p) * (gr.size.width)
                                     / (videoVM.totalDuration ?? 1),
@@ -132,10 +132,18 @@ struct VideoTimelineView: View {
                                 videoVM.isSeeking = false
                             })
                     )
-                    Spacer()
+                    
                 }
             }
-            .frame(height: 100)
+            .padding(.top,48)
+            .padding(.all,11)
+            
+            .fixedSize()
+            .background() {
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundStyle(.black.opacity(0.2))
+            }
+            .frame(height: 84)
         }
     }
 }
