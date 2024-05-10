@@ -32,11 +32,7 @@ class VideoPlayerVM: NSObject, ObservableObject,
                 "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"
         )!
 
-        guard let path = Bundle.main.path(forResource: "output", ofType: "m3u8")
-        else {
-            debugPrint("outut not found")
-            return
-        }
+       
         let asset = AVAsset(url: url)
 
         var playerItem = AVPlayerItem(asset: asset)
