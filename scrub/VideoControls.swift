@@ -138,6 +138,6 @@ struct VideoControls: View {
     }
 }
 
-//#Preview {
-//    VideoControls()
-//}
+#Preview {
+    VideoControls(videoVM: VideoPlayerVM(player: AVPlayer()))
+}
