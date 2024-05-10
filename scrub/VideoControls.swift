@@ -192,5 +192,5 @@ struct VideoControls: View {
 }
 
 #Preview {
-    VideoControls(videoVM: VideoPlayerVM(player: AVPlayer()))
+    VideoControls(videoVM: VideoPlayerVM())
 }
