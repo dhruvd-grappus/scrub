@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "format_list_bulleted.svg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "format_list_bulleted 1.svg",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "format_list_bulleted 2.svg",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

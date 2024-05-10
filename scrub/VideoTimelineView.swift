@@ -10,6 +10,14 @@ import Combine
 import Foundation
 import SwiftUI
 
+struct Placemark {
+    let seconds: Double
+    let icon: ImageResource
+    init(seconds: Double, icon: ImageResource) {
+        self.seconds = seconds
+        self.icon = icon
+    }
+}
 extension Int {
     var secondsToTimeString: String {
         var seconds = self
@@ -32,14 +40,14 @@ extension Int {
 struct VideoTimelineView: View {
     @ObservedObject var videoVM: VideoPlayerVM
 
-    var placemarks: [Int] = []
+    var placemarks: [Placemark] = []
     @State var lastCoordinateValue: CGFloat = 0.0
     var sliderRange: ClosedRange<Double> = 0...1
     var thumbColor: Color = .yellow
     var minTrackColor: Color = .blue
     var maxTrackColor: Color = .gray
 
-    let thumbWidth = 80.0
+    let thumbWidth = 41.0
 
     var body: some View {
         GeometryReader { gr in
@@ -47,12 +55,21 @@ struct VideoTimelineView: View {
             let maxValue = (gr.size.width - thumbWidth)
 
             ZStack(alignment: .leading) {
-                RoundedRectangle(
-                    cornerRadius: /*@START_MENU_TOKEN@*/
-                        25.0 /*@END_MENU_TOKEN@*/
-                )
-                .foregroundColor(.white)
-                .frame(width: gr.size.width, height: 10)
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(
+                        cornerRadius:
+                            25.0
+                    )
+                    .foregroundColor(.white.opacity(0.4))
+                    RoundedRectangle(
+                        cornerRadius:
+                            25.0
+                    )
+                    .foregroundColor(.white)
+                    .frame(width: videoVM.seekPos * maxValue)
+
+                }
+                .frame(width: gr.size.width, height: 8)
                 .onTapGesture(count: 1) { location in
 
                     // Perform an action based on tap location (optional)
@@ -62,21 +79,22 @@ struct VideoTimelineView: View {
 
                     videoVM.isSeeking = true
                 }
+
                 ZStack(alignment: .leading) {
-                    ForEach(placemarks, id: \.self) { p in
-                        Image(.moments)
+                    ForEach(placemarks, id: \.seconds) { p in
+                        Image(p.icon)
                             .resizable()
                             .frame(width: 24, height: 24)
                             .offset(
-                                x: Double(p) * (gr.size.width)
+                                x: Double(p.seconds) * (gr.size.width)
                                     / (videoVM.totalDuration ?? 1),
-                                y: -50
+                                y: -40
                             )
                             .onTapGesture(count: 1) { location in
 
                                 withAnimation {
                                     videoVM.seekPos =
-                                        (Double(p)
+                                        (Double(p.seconds)
                                             / (videoVM.totalDuration ?? 1))
                                         + (5)
                                         / gr.size.width
@@ -90,17 +108,14 @@ struct VideoTimelineView: View {
                 }
 
                 HStack(spacing: 0) {
-                    ZStack {
-                        RoundedRectangle(
-                            cornerRadius: /*@START_MENU_TOKEN@*/
-                                25.0 /*@END_MENU_TOKEN@*/
-                        )
-                        Text(Int(videoVM.currentTime).secondsToTimeString)
-                            .font(.system(size: 20))
-                            .foregroundStyle(.black)
-                    }
+
+                    RoundedRectangle(
+                        cornerRadius: /*@START_MENU_TOKEN@*/
+                            25.0 /*@END_MENU_TOKEN@*/
+                    )
+
                     .foregroundColor(.white)
-                    .frame(width: thumbWidth, height: 40)
+                    .frame(width: thumbWidth, height: 23)
                     .offset(x: videoVM.seekPos * maxValue)
                     .gesture(
                         DragGesture(minimumDistance: 0)
@@ -132,14 +147,14 @@ struct VideoTimelineView: View {
                                 videoVM.isSeeking = false
                             })
                     )
-                    
+
                 }
             }
-            .padding(.top,48)
-            .padding(.all,11)
-            
+            .padding(.top, 48)
+            .padding(.all, 11)
+
             .fixedSize()
-            .background() {
+            .background {
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundStyle(.black.opacity(0.2))
             }

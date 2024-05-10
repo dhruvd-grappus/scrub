@@ -27,7 +27,7 @@ struct ContentView: View {
         VStack {
             VideoPlayer(player: videoVM.player)
                 .disabled(true)
-                .frame(height: 500)
+                .frame(width: 900, height: 500)
 
             Spacer().frame(height: 20)
             VideoControls(videoVM: videoVM)

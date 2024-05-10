@@ -51,51 +51,115 @@ struct VideoControls: View {
 
         }
     }
-    
+
     func playORPause() {
-        if videoVM.player.timeControlStatus == .playing {
+        if videoVM.isPlaying {
             videoVM.isPlaying = false
             videoVM.player.pause()
         } else {
             videoVM.isPlaying = true
             videoVM.player.play()
             if let currentItem = videoVM.player.currentItem {
-                
+
                 if currentItem.duration.seconds > 1
                     && videoVM.totalDuration == nil
                 {
                     videoVM.totalDuration =
-                    currentItem.duration.seconds
-                    
+                        currentItem.duration.seconds
+
                 }
             }
         }
     }
     var body: some View {
-        VStack(spacing:0) {
-       
-         
-            Spacer().frame(height: 30)
+        VStack(spacing: 0) {
+
+            Spacer().frame(height: 15)
             VideoTimelineView(
                 videoVM: videoVM,
-                placemarks: [10, 20]
+                placemarks: [
+                    Placemark(seconds: 500, icon: .moments),
+                    Placemark(seconds: 560, icon: .moments),
+                    Placemark(seconds: 300, icon: .wicketMoment),
+                    Placemark(seconds: 800, icon: .wicketMoment),
+                ]
             )
             .onChange(of: videoVM.seekPos) { newValue in
                 seekVideoForPosition(newValue)
 
             }
-            .padding(.trailing,24)
-          
-            .frame(width:888, height: 100)
-           Spacer()
-           
+            .padding(.trailing, 24)
+
+            .frame(width: 888, height: 100)
+            Spacer()
+            ZStack {
+                HStack(spacing: 0) {
+                    HStack(spacing: 8) {
+                        Text(Int(videoVM.currentTime).secondsToTimeString)
+                            .inter(19)
+                            .fontWeight(.medium)
+                            .foregroundColor(.white)
+                        Text(
+                            "-\(Int((videoVM.totalDuration ?? 0) - videoVM.currentTime).secondsToTimeString)"
+                        )
+                        .inter(14)
+                        .fontWeight(.medium)
+                        .foregroundColor(.white)
+                        .opacity(0.6)
+
+                    }
+                    .frame(width: 200, alignment: .leading)
+                    Spacer()
+
+                    HStack(spacing: 28) {
+                        Image(.list)
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                        Image(.volumeUp)
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                    }
+
+                }
+                HStack(spacing: 28) {
+                    Image(.fastForward)
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                        .rotationEffect(.degrees(180))
+
+                    ZStack {
+                        if videoVM.isPlaying {
+                            Image(.pause)
+                                .resizable()
+                        } else {
+                            Image(systemName: "play")
+                                .resizable()
+
+                        }
+
+                    }
+                    .foregroundColor(.white)
+                    .frame(width: 24, height: 24)
+                    .onTapGesture {
+                        playORPause()
+                    }
+                    Image(.fastForward)
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                }
+
+            }
+
+            .padding(.trailing, 15)
+            .padding(.leading, 11)
+
         }
-        .frame(width: 900,height: 170)
-        .padding(.all,12)
+        .frame(width: 900, height: 170)
+        .padding(.all, 15)
 
         .background {
             RoundedRectangle(
-                cornerRadius: /*@START_MENU_TOKEN@*/ 25.0 /*@END_MENU_TOKEN@*/
+                cornerRadius: 20
             )
             .foregroundColor(.panelGray)
         }
@@ -103,9 +167,7 @@ struct VideoControls: View {
             videoVM.currentTime = time
 
         }
-        .onAppear() {
-            videoVM.totalDuration = 60
-        }
+
         .onChange(of: videoVM.currentTime) { oldTime, time in
 
             if !videoVM.isSeeking {
@@ -120,10 +182,10 @@ struct VideoControls: View {
             }
         }
         .padding(.all, 25)
+
     }
 }
 
 #Preview {
     VideoControls(videoVM: VideoPlayerVM(player: AVPlayer()))
 }
-
