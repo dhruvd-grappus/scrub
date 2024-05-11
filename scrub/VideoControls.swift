@@ -72,12 +72,9 @@ struct VideoControls: View {
         }
     }
     var body: some View {
-        ZStack {
-            RoundedRectangle(
-                cornerRadius: 20
-            )
-            .foregroundColor(.panelGray)
-            VStack(spacing: 0) {
+        
+            
+        VStack(spacing: 0) {
 
                 Spacer().frame(height: 3)
                 VideoTimelineView(
@@ -93,7 +90,7 @@ struct VideoControls: View {
                     seekVideoForPosition(newValue)
 
                 }
-                .padding(.trailing, 24)
+                .padding(.trailing, 40)
 
                 .frame(width: 888, height: 100)
                 Spacer()
@@ -185,7 +182,7 @@ struct VideoControls: View {
                 }
             }
 
-        }
+        
         .frame(width: 900, height: 170)
 
     }

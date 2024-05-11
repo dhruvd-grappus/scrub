@@ -29,13 +29,19 @@ struct KeyMoments: View {
                     
                         .clipShape(.rect(cornerRadius: 10))
                         .overlay() {
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(LinearGradient(
-                                    gradient: .init(colors: [.black.opacity(0), .black.opacity(0.6)]),
-                                    startPoint: .top,
-                                    endPoint: .bottom
-                                ))
-                                .stroke(Color.white, lineWidth: 1)
+                            if index == videoVM.currentURLIndex {
+                                RoundedRectangle(cornerRadius: 10).stroke(Color.white, lineWidth: 1)
+                            }
+                            else{
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill( LinearGradient(
+                                        gradient: .init(colors: [.black.opacity(0), .black.opacity(0.6)]),
+                                        startPoint: .top,
+                                        endPoint: .bottom
+                                    ))
+                                    .stroke(Color.white, lineWidth: 1)
+                            }
+                           
                             
                         }
                     HStack(spacing:4) {

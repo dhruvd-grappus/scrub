@@ -23,7 +23,9 @@ struct ContentView: View {
             VStack {
                 VideoPlayer(player: videoVM.player)
                     .disabled(true)
-                    .frame(width: 900, height: 500)
+                    .aspectRatio(CGSize(width: 754 , height: 100), contentMode: .fill)
+                    .frame(width: 754, height: 440)
+                    .clipShape(.rect(cornerRadius: 40))
 
                 Spacer().frame(height: 20)
                 VideoControls(videoVM: videoVM)
@@ -46,5 +48,9 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ZStack {
+        Color.black
+        ContentView()
+    }
+    
 }
