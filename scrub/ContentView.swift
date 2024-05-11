@@ -16,7 +16,7 @@ struct ContentView: View {
         player: AVPlayer(
             url: URL(
                 string:
-                    "https://db2.indexcom.com/bucket/ram/00/05/05.m3u8"
+                    "https://apple-hls-demo.s3.ap-south-1.amazonaws.com/v1/moon/output/moon_1920_1080test-name.m3u8"
             )!
         )
     )
@@ -40,7 +40,7 @@ struct ContentView: View {
                 videoVM.play(
                     url: URL(
                         string:
-                            "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"
+                            "https://apple-hls-demo.s3.ap-south-1.amazonaws.com/v1/fifa/output/sample_1080test-name.m3u8"
                     )!
                 )
             }

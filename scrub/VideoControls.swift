@@ -126,6 +126,7 @@ struct VideoControls: View {
             if !videoVM.isSeeking {
 
                 if videoVM.totalDuration != nil {
+                    print(videoVM.totalDuration)
                     withAnimation {
                         videoVM.seekPos = (time / (videoVM.totalDuration!))
                     }
