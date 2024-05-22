@@ -153,7 +153,6 @@ struct VideoTimelineView: View {
             .padding(.top, 35)
             .padding(.all, 13)
 
-          
             .background {
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundStyle(.black.opacity(0.2))

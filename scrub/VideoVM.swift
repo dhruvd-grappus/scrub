@@ -16,17 +16,15 @@ class VideoPlayerVM: ObservableObject {
         self.urls = urls
         if urls.isEmpty {
             self.player = AVPlayer()
-        }
-        else {
-            
-            
-            self.player = AVPlayer(url: URL(string:urls.first!)!)
-            
+        } else {
+
+            self.player = AVPlayer(url: URL(string: urls.first!)!)
+
         }
         self.timeObserver = PlayerTimeObserver(player: self.player)
     }
     @Published var currentURLIndex = 0
-    @Published var urls : [String] = []
+    @Published var urls: [String] = []
     @Published var seekPos = 0.0
     @Published var isPlaying = false
     @Published var currentTime = 0.0

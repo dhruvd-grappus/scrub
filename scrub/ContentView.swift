@@ -10,20 +10,29 @@ import Combine
 import SwiftUI
 
 struct ContentView: View {
-    static var urls = ["https://embed-ssl.wistia.com/deliveries/cc8402e8c16cc8f36d3f63bd29eb82f99f4b5f88/accudvh5jy.mp4","https://videos.pexels.com/video-files/6950555/6950555-sd_640_360_25fps.mp4","https://videos.pexels.com/video-files/19757074/19757074-sd_640_360_30fps.mp4","https://videos.pexels.com/video-files/20184664/20184664-sd_640_360_30fps.mp4","https://videos.pexels.com/video-files/9712579/9712579-sd_640_360_30fps.mp4"]
+    static var urls = [
+        "https://embed-ssl.wistia.com/deliveries/cc8402e8c16cc8f36d3f63bd29eb82f99f4b5f88/accudvh5jy.mp4",
+        "https://videos.pexels.com/video-files/6950555/6950555-sd_640_360_25fps.mp4",
+        "https://videos.pexels.com/video-files/19757074/19757074-sd_640_360_30fps.mp4",
+        "https://videos.pexels.com/video-files/20184664/20184664-sd_640_360_30fps.mp4",
+        "https://videos.pexels.com/video-files/9712579/9712579-sd_640_360_30fps.mp4",
+    ]
     @StateObject var videoVM = VideoPlayerVM(
-      urls: urls
+        urls: urls
     )
     init() {
 
     }
 
     var body: some View {
-        HStack(spacing:20) {
+        HStack(spacing: 20) {
             VStack {
                 VideoPlayer(player: videoVM.player)
                     .disabled(true)
-                    .aspectRatio(CGSize(width: 754 , height: 100), contentMode: .fill)
+                    .aspectRatio(
+                        CGSize(width: 754, height: 100),
+                        contentMode: .fill
+                    )
                     .frame(width: 754, height: 440)
                     .clipShape(.rect(cornerRadius: 40))
 
@@ -33,13 +42,13 @@ struct ContentView: View {
             }
             VStack {
                 Spacer().frame(height: 20)
-                KeyMoments(videoVM: videoVM).background() {
-                    RoundedRectangle(cornerRadius: 20)
-                        .foregroundColor(.panelGray)
-                }
+                KeyMoments(videoVM: videoVM)
+                    .background {
+                        RoundedRectangle(cornerRadius: 20)
+                            .foregroundColor(.panelGray)
+                    }
                 Spacer()
             }
-            
 
             .ignoresSafeArea()
         }
@@ -52,5 +61,5 @@ struct ContentView: View {
         Color.black
         ContentView()
     }
-    
+
 }
